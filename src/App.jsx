@@ -6,7 +6,7 @@ import ProfileModal from './components/ProfileModal';
 import NewShipmentModal from './components/NewShipmentModal';
 import ProjectOverviewModal from './components/ProjectOverviewModal';
 import AdminPasswordModal from './components/AdminPasswordModal';
-import AdminLoginModal from './components/AdminLoginModal';
+import AuthModal from './components/AuthModal';
 
 import HomeView from './views/HomeView';
 import UserLogisticsModuleView from './views/UserLogisticsModuleView';
@@ -30,7 +30,9 @@ export default function App() {
   const [isNewShipmentOpen, setIsNewShipmentOpen] = useState(false);
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
   const [isAdminPasswordOpen, setIsAdminPasswordOpen] = useState(false);
-  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [authInitialTab, setAuthInitialTab] = useState('login');
+  const [authInitialRole, setAuthInitialRole] = useState(null);
 
   const [activeTrackingId, setActiveTrackingId] = useState('SHP-701');
   const [activePodId, setActivePodId] = useState('SHP-701');
@@ -63,7 +65,20 @@ export default function App() {
 
       if (usersRes.users) {
         setUsers(usersRes.users);
-        if (!currentUser) setCurrentUser(usersRes.users[0]); // Dilan Wanni Arachchi default
+        if (!currentUser) {
+          const cached = localStorage.getItem('agribridge_current_user');
+          if (cached) {
+            try {
+              const parsed = JSON.parse(cached);
+              const matched = usersRes.users.find((u) => u.id === parsed.id) || parsed;
+              setCurrentUser(matched);
+            } catch (e) {
+              setCurrentUser(usersRes.users[0]);
+            }
+          } else {
+            setCurrentUser(usersRes.users[0]); // Default to Dilan Wanni Arachchi (Admin)
+          }
+        }
       }
       if (driversRes.drivers) setDrivers(driversRes.drivers);
       if (shipmentsRes.shipments) setShipments(shipmentsRes.shipments);
@@ -76,7 +91,37 @@ export default function App() {
   // Switch persona
   const handleSwitchUser = (user) => {
     setCurrentUser(user);
-    showToast(`Switched persona to ${user.name} (${user.role})`, 'info');
+    if (user) {
+      localStorage.setItem('agribridge_current_user', JSON.stringify(user));
+      showToast(`Switched persona to ${user.name} (${user.role})`, 'info');
+    }
+  };
+
+  // Login success handler
+  const handleLoginSuccess = (user, token) => {
+    setCurrentUser(user);
+    if (user) {
+      localStorage.setItem('agribridge_current_user', JSON.stringify(user));
+      if (token) localStorage.setItem('agribridge_token', token);
+      if (user.role === 'Admin') {
+        handleOpenLogistics('dashboard');
+      }
+    }
+  };
+
+  // Logout handler
+  const handleLogout = () => {
+    setCurrentUser(null);
+    localStorage.removeItem('agribridge_current_user');
+    localStorage.removeItem('agribridge_token');
+    showToast('Signed out successfully. Browsing as Guest.', 'info');
+  };
+
+  // Open Auth Modal
+  const handleOpenAuth = (tab = 'login', role = null) => {
+    setAuthInitialTab(tab);
+    setAuthInitialRole(role);
+    setIsAuthOpen(true);
   };
 
   // Open Logistics with specific sub-tab
@@ -229,7 +274,9 @@ export default function App() {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenProfile={() => setIsProfileOpen(true)}
         onOpenOverview={() => setIsOverviewOpen(true)}
-        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
+        onOpenAuth={handleOpenAuth}
+        onOpenAdminPassword={() => setIsAdminPasswordOpen(true)}
+        onLogout={handleLogout}
       />
 
       {/* Main View Container */}
@@ -300,7 +347,7 @@ export default function App() {
             </span>
             <button
               type="button"
-              onClick={() => setIsAdminLoginOpen(true)}
+              onClick={() => handleOpenAuth('login', 'Admin')}
               style={{
                 background: 'transparent',
                 border: 'none',
@@ -313,9 +360,29 @@ export default function App() {
                 gap: '4px',
                 padding: 0,
               }}
-              title="Open secure Administrator authentication portal"
+              title="Open secure Administrator authentication portal (Password: Admin@2026)"
             >
-              🔒 Admin Sign In
+              🔒 Admin Sign In (Admin@2026)
+            </button>
+            <span>•</span>
+            <button
+              type="button"
+              onClick={() => handleOpenAuth('login')}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-secondary)',
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                fontWeight: 500,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: 0,
+              }}
+              title="Sign in or Register as Buyer, Farmer, or Driver"
+            >
+              🔑 Portal Login / Register
             </button>
           </div>
         </div>
@@ -366,16 +433,15 @@ export default function App() {
         />
       )}
 
-      {/* Admin Login Portal Modal */}
-      <AdminLoginModal
-        isOpen={isAdminLoginOpen}
-        onClose={() => setIsAdminLoginOpen(false)}
-        onAdminLoginSuccess={(adminUser) => {
-          handleSwitchUser(adminUser);
-          handleOpenLogistics('dashboard');
-        }}
+      {/* Unified Authentication & Login System Modal */}
+      <AuthModal
+        isOpen={isAuthOpen}
+        onClose={() => setIsAuthOpen(false)}
+        initialTab={authInitialTab}
+        initialRole={authInitialRole}
+        onLoginSuccess={handleLoginSuccess}
         showToast={showToast}
-        adminUser={users.find((u) => u.role === 'Admin')}
+        users={users}
       />
 
       {/* Toasts */}

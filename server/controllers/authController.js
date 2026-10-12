@@ -9,7 +9,12 @@ export const login = (req, res) => {
 
   let user = null;
   if (email) {
-    user = memoryStore.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+    const cleanEmail = email.toLowerCase().trim();
+    if (cleanEmail === 'admin@agribridge.lk' || cleanEmail === 'admin') {
+      user = memoryStore.users.find((u) => u.role === 'Admin');
+    } else {
+      user = memoryStore.users.find((u) => u.email.toLowerCase() === cleanEmail);
+    }
   } else if (role) {
     user = memoryStore.users.find((u) => u.role.toLowerCase() === role.toLowerCase());
   }

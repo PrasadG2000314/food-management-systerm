@@ -11,7 +11,7 @@ export const initialUsers = [
     address: "Level 4, AgriBridge HQ, Colombo 03",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
     password: "Admin@2026",
-    passwordHash: "$2b$10$xrvBMYfzTgqiTDUCb7Su3uj4/lQK5bws2b8O0uQ/8GVE60rucg.KK",
+    passwordHash: "$2b$10$venL1HsH.WH.S6r1kUYMIefyzB91ilUfPXCNT.XmNqVYhprtjJ/hW",
     createdAt: "2026-01-15T08:00:00Z",
     notes: "Lead Logistics & Security Administrator"
   },
@@ -27,6 +27,8 @@ export const initialUsers = [
     district: "Nuwara Eliya",
     address: "Upper Lake Road, Nuwara Eliya",
     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+    password: "Farmer@2026",
+    passwordHash: "$2b$10$1e/bPDVALmt0mKpgqgFDyeRwxDlKPXkX8Q13f2xO63EZcgPTRTwDK",
     createdAt: "2026-02-01T10:30:00Z",
     notes: "Wholesale organic vegetable supplier"
   },
@@ -42,6 +44,8 @@ export const initialUsers = [
     district: "Matale",
     address: "Economic Centre Road, Dambulla",
     avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+    password: "Farmer@2026",
+    passwordHash: "$2b$10$1e/bPDVALmt0mKpgqgFDyeRwxDlKPXkX8Q13f2xO63EZcgPTRTwDK",
     createdAt: "2026-02-10T11:15:00Z",
     notes: "Major Dambulla hub wholesale vendor"
   },
@@ -57,6 +61,8 @@ export const initialUsers = [
     district: "Gampaha",
     address: "Kandy Road, Kelaniya",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+    password: "Buyer@2026",
+    passwordHash: "$2b$10$Rnoi5HtX2fAbHueRGSWNoOrl1VcnUXMTGURiwPT362qMxAhNjMXQS",
     createdAt: "2026-02-14T09:40:00Z",
     notes: "Bulk daily buyer of highland crops"
   },
@@ -72,6 +78,8 @@ export const initialUsers = [
     district: "Kandy",
     address: "Peradeniya Junction, Kandy",
     avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
+    password: "Driver@2026",
+    passwordHash: "$2b$10$BacWnRN6bo53pbS2Dqjo7ONPbtSflcACf5aCQIQubz4BSF4HPcFWW",
     createdAt: "2026-02-20T14:20:00Z",
     notes: "Specialized cold chain perishable transport"
   },
@@ -87,6 +95,8 @@ export const initialUsers = [
     district: "Kurunegala",
     address: "Circular Road, Kurunegala",
     avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80",
+    password: "Driver@2026",
+    passwordHash: "$2b$10$BacWnRN6bo53pbS2Dqjo7ONPbtSflcACf5aCQIQubz4BSF4HPcFWW",
     createdAt: "2026-02-22T08:15:00Z",
     notes: "Experienced dry goods & root vegetable courier"
   }

@@ -57,10 +57,32 @@ export const api = {
       // fallback
     }
     const state = getLocalState();
-    const user = (email ? state.users.find((u) => u.email.toLowerCase() === email.toLowerCase()) : null) ||
-                 (role ? state.users.find((u) => u.role.toLowerCase() === role.toLowerCase()) : null) ||
-                 state.users[0];
-    return { success: true, user, token: `local-token-${user.id}` };
+    let user = null;
+    if (email) {
+      const cleanEmail = email.toLowerCase().trim();
+      if (cleanEmail === 'admin@agribridge.lk' || cleanEmail === 'admin') {
+        user = state.users.find((u) => u.role === 'Admin');
+      } else {
+        user = state.users.find((u) => u.email.toLowerCase() === cleanEmail);
+      }
+    } else if (role) {
+      user = state.users.find((u) => u.role.toLowerCase() === role.toLowerCase());
+    }
+
+    if (!user) {
+      return { success: false, message: 'User account not found with this email.' };
+    }
+
+    if (password && user.password && user.password !== password) {
+      return { success: false, message: 'Invalid password. Access denied.' };
+    }
+
+    return {
+      success: true,
+      message: `${user.role} logged in successfully`,
+      user,
+      token: `local-token-${user.id}`,
+    };
   },
 
   async verifyAdminPassword(password) {
