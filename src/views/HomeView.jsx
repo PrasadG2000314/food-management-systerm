@@ -27,7 +27,10 @@ import {
   Info,
   Calendar,
   Phone,
+  ShoppingCart,
 } from 'lucide-react';
+
+import OnlineFoodCityMarket from '../components/OnlineFoodCityMarket';
 
 export default function HomeView({
   onOpenLogistics,
@@ -40,7 +43,13 @@ export default function HomeView({
   onSwitchUser,
   onOpenNewShipment,
   onTrackShipment,
+  onPlaceCustomerOrder,
+  onPodShipment,
+  showToast,
 }) {
+  // 0. Active Home Page Mode ('FOOD_CITY' Customer Supermarket vs 'FREIGHT_LOGISTICS' B2B Freight)
+  const [activeHomeMode, setActiveHomeMode] = useState('FOOD_CITY');
+
   // 1. Interactive Freight Calculator State
   const [calcOrigin, setCalcOrigin] = useState('Nuwara Eliya');
   const [calcDestination, setCalcDestination] = useState('Colombo');
@@ -225,23 +234,150 @@ export default function HomeView({
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '52px' }}>
-      {/* 1. HERO SECTION: Dynamic Dual-Column with Live Freight Estimator */}
-      <section
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '44px' }}>
+      {/* 0. INTERACTIVE HOME EXPERIENCE SWITCHER */}
+      <div
         style={{
-          background: 'linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-subtle) 100%)',
-          borderRadius: 'var(--radius-lg)',
-          border: '1px solid var(--border-subtle)',
-          padding: '48px 40px',
-          boxShadow: 'var(--shadow-sm)',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
-          gap: '36px',
+          display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          position: 'relative',
-          overflow: 'hidden',
+          flexWrap: 'wrap',
+          gap: '14px',
+          padding: '10px 18px',
+          background: 'var(--bg-surface)',
+          borderRadius: 'var(--radius-full)',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--shadow-sm)',
         }}
       >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', paddingLeft: '6px' }}>
+          <div
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              background: 'var(--primary-subtle)',
+              color: 'var(--primary)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Sparkles size={16} />
+          </div>
+          <div>
+            <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--text-primary)' }}>
+              Interactive Interface Mode
+            </div>
+            <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>
+              Switch between Online Food City retail shopping and wholesale logistics estimation
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            onClick={() => setActiveHomeMode('FOOD_CITY')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 18px',
+              borderRadius: 'var(--radius-full)',
+              border: 'none',
+              background: activeHomeMode === 'FOOD_CITY' ? 'var(--primary)' : 'var(--bg-subtle)',
+              color: activeHomeMode === 'FOOD_CITY' ? '#ffffff' : 'var(--text-secondary)',
+              fontWeight: 700,
+              fontSize: '0.84rem',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              boxShadow: activeHomeMode === 'FOOD_CITY' ? '0 2px 6px rgba(5,150,105,0.3)' : 'none',
+            }}
+          >
+            <ShoppingCart size={15} />
+            <span>🛒 Online Food City Supermarket</span>
+            <span
+              style={{
+                fontSize: '0.68rem',
+                padding: '2px 7px',
+                borderRadius: 'var(--radius-full)',
+                background: activeHomeMode === 'FOOD_CITY' ? 'rgba(255,255,255,0.22)' : 'var(--border-strong)',
+                color: activeHomeMode === 'FOOD_CITY' ? '#ffffff' : 'var(--text-primary)',
+                fontWeight: 800,
+              }}
+            >
+              Customer Choice
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveHomeMode('FREIGHT_LOGISTICS')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 18px',
+              borderRadius: 'var(--radius-full)',
+              border: 'none',
+              background: activeHomeMode === 'FREIGHT_LOGISTICS' ? 'var(--primary)' : 'var(--bg-subtle)',
+              color: activeHomeMode === 'FREIGHT_LOGISTICS' ? '#ffffff' : 'var(--text-secondary)',
+              fontWeight: 700,
+              fontSize: '0.84rem',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
+              boxShadow: activeHomeMode === 'FREIGHT_LOGISTICS' ? '0 2px 6px rgba(5,150,105,0.3)' : 'none',
+            }}
+          >
+            <Calculator size={15} />
+            <span>⚡ Route & Freight Estimator</span>
+            <span
+              style={{
+                fontSize: '0.68rem',
+                padding: '2px 7px',
+                borderRadius: 'var(--radius-full)',
+                background: activeHomeMode === 'FREIGHT_LOGISTICS' ? 'rgba(255,255,255,0.22)' : 'var(--border-strong)',
+                color: activeHomeMode === 'FREIGHT_LOGISTICS' ? '#ffffff' : 'var(--text-primary)',
+                fontWeight: 800,
+              }}
+            >
+              Wholesale
+            </span>
+          </button>
+        </div>
+      </div>
+
+      {/* 1A. PRIMARY CUSTOMER INTERACTIVE INTERFACE: ONLINE FOOD CITY SUPERMARKET */}
+      {activeHomeMode === 'FOOD_CITY' && (
+        <section>
+          <OnlineFoodCityMarket
+            onPlaceOrder={onPlaceCustomerOrder}
+            onTrackOrder={onTrackShipment}
+            onOpenPod={onPodShipment}
+            showToast={showToast}
+            currentUser={currentUser}
+          />
+        </section>
+      )}
+
+      {/* 1B. ALTERNATIVE B2B WHOLESALE INTERFACE: DUAL-COLUMN FREIGHT ESTIMATOR */}
+      {activeHomeMode === 'FREIGHT_LOGISTICS' && (
+        <section
+          style={{
+            background: 'linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-subtle) 100%)',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--border-subtle)',
+            padding: '48px 40px',
+            boxShadow: 'var(--shadow-sm)',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(360px, 1fr))',
+            gap: '36px',
+            alignItems: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
         {/* Left Column: Vision & Customer Trust */}
         <div>
           <div
@@ -487,6 +623,7 @@ export default function HomeView({
           </div>
         </div>
       </section>
+      )}
 
       {/* 2. INSTANT LIVE CONSIGNMENT TRACKING SEARCH WIDGET (Customer-Friendly) */}
       <section
@@ -628,6 +765,7 @@ export default function HomeView({
       </section>
 
       {/* 3. FRESH PRODUCE MARKETPLACE SHOWCASE (Direct Farm Gate Produce Ready for Dispatch) */}
+      {activeHomeMode === 'FREIGHT_LOGISTICS' && (
       <section>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '22px', flexWrap: 'wrap', gap: '14px' }}>
           <div>
@@ -759,6 +897,7 @@ export default function HomeView({
           ))}
         </div>
       </section>
+      )}
 
       {/* 4. INTERACTIVE CUSTOMER PERSONA NAVIGATOR ("Experience AgriBridge As") */}
       <section className="card" style={{ padding: '36px' }}>

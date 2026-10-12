@@ -243,6 +243,9 @@ export default function App() {
             onSwitchUser={handleSwitchUser}
             onOpenNewShipment={() => setIsNewShipmentOpen(true)}
             onTrackShipment={handleTrackShipment}
+            onPlaceCustomerOrder={handleCreateShipment}
+            onPodShipment={handlePodShipment}
+            showToast={showToast}
           />
         )}
 
