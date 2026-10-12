@@ -237,6 +237,12 @@ export default function App() {
             stats={stats}
             currentUser={currentUser}
             onOpenOverview={() => setIsOverviewOpen(true)}
+            shipments={shipments}
+            drivers={drivers}
+            users={users}
+            onSwitchUser={handleSwitchUser}
+            onOpenNewShipment={() => setIsNewShipmentOpen(true)}
+            onTrackShipment={handleTrackShipment}
           />
         )}
 
