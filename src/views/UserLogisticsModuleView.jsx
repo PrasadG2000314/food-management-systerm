@@ -42,6 +42,9 @@ export default function UserLogisticsModuleView({
   onOpenProfile,
   onOpenAdminPassword,
 }) {
+  const isBuyer = currentUser?.role === 'Buyer';
+  const isAdmin = currentUser?.role === 'Admin';
+
   const subNavItems = [
     {
       id: 'dashboard',
@@ -73,12 +76,17 @@ export default function UserLogisticsModuleView({
       icon: FileBarChart,
       badge: null,
     },
-    {
-      id: 'users',
-      label: 'User Directory & Roles',
-      icon: Users,
-      badge: users.length,
-    },
+    // User Directory is restricted to Administrators; Buyers cannot inspect administrative users
+    ...(!isBuyer
+      ? [
+          {
+            id: 'users',
+            label: 'User Directory & Roles',
+            icon: Users,
+            badge: users.filter((u) => (isBuyer ? u.role !== 'Admin' : true)).length,
+          },
+        ]
+      : []),
   ];
 
   const pendingCount = shipments.filter((s) => s.status === 'Pending').length;
@@ -133,14 +141,17 @@ export default function UserLogisticsModuleView({
 
         {/* Global Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={onOpenAdminPassword}
-            title="Set, view, or change Admin password"
-          >
-            <Shield size={14} color="var(--primary)" /> Admin Password
-          </button>
-          {pendingCount > 0 && (
+          {/* Admin Password button is strictly reserved for Admin users - hidden from Buyers */}
+          {isAdmin && (
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={onOpenAdminPassword}
+              title="Set, view, or change Admin password"
+            >
+              <Shield size={14} color="var(--primary)" /> Admin Password
+            </button>
+          )}
+          {pendingCount > 0 && !isBuyer && (
             <button
               className="btn btn-secondary btn-sm"
               onClick={onAutoMatchPending}
@@ -272,14 +283,53 @@ export default function UserLogisticsModuleView({
         )}
 
         {subTab === 'users' && (
-          <UserManagementView
-            users={users}
-            onRegisterUser={onRegisterUser}
-            onUpdateUserStatus={onUpdateUserStatus}
-            onOpenProfile={onOpenProfile}
-            onOpenAdminPassword={onOpenAdminPassword}
-            currentUser={currentUser}
-          />
+          isBuyer ? (
+            <div
+              className="card"
+              style={{
+                padding: '60px 24px',
+                textAlign: 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                gap: '16px',
+                background: 'var(--bg-surface)',
+              }}
+            >
+              <div
+                style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '50%',
+                  background: 'var(--bg-subtle)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'var(--text-muted)',
+                }}
+              >
+                <Shield size={28} />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', margin: 0 }}>Administrative Access Restricted</h3>
+                <p style={{ maxWidth: '480px', color: 'var(--text-muted)', fontSize: '0.88rem', marginTop: '6px' }}>
+                  As a Wholesale or Retail Buyer, access to system administrative records, internal user directories, and security privileges is restricted.
+                </p>
+              </div>
+              <button className="btn btn-primary btn-sm" onClick={() => setSubTab('dashboard')}>
+                Return to Overview Dashboard
+              </button>
+            </div>
+          ) : (
+            <UserManagementView
+              users={users}
+              onRegisterUser={onRegisterUser}
+              onUpdateUserStatus={onUpdateUserStatus}
+              onOpenProfile={onOpenProfile}
+              onOpenAdminPassword={onOpenAdminPassword}
+              currentUser={currentUser}
+            />
+          )
         )}
       </div>
     </div>

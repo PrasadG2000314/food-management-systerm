@@ -304,6 +304,7 @@ export default function App() {
         users={users}
         shipments={shipments}
         drivers={drivers}
+        currentUser={currentUser}
         onSelectShipment={handleTrackShipment}
         onSelectUser={(u) => {
           handleSwitchUser(u);
@@ -331,13 +332,15 @@ export default function App() {
         onOpenMyPart={() => handleOpenLogistics('dashboard')}
       />
 
-      <AdminPasswordModal
-        isOpen={isAdminPasswordOpen}
-        onClose={() => setIsAdminPasswordOpen(false)}
-        adminUser={users.find((u) => u.role === 'Admin') || currentUser}
-        onChangePassword={handleChangePassword}
-        showToast={showToast}
-      />
+      {currentUser?.role === 'Admin' && (
+        <AdminPasswordModal
+          isOpen={isAdminPasswordOpen}
+          onClose={() => setIsAdminPasswordOpen(false)}
+          adminUser={users.find((u) => u.role === 'Admin') || currentUser}
+          onChangePassword={handleChangePassword}
+          showToast={showToast}
+        />
+      )}
 
       {/* Toasts */}
       <Toast toasts={toasts} onRemove={removeToast} />

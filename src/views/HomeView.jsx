@@ -1016,39 +1016,41 @@ export default function HomeView({
             </span>
           </div>
 
-          {/* Admin */}
-          <div
-            onClick={() => {
-              const admin = users.find((u) => u.role === 'Admin') || { id: 'usr-001', name: 'Dilan Wanni Arachchi', role: 'Admin' };
-              onSwitchUser(admin);
-              onOpenLogistics('dashboard');
-            }}
-            style={{
-              padding: '20px',
-              borderRadius: 'var(--radius-lg)',
-              border: currentUser?.role === 'Admin' ? '2px solid #9333ea' : '1px solid var(--border-subtle)',
-              background: currentUser?.role === 'Admin' ? 'rgba(147, 51, 234, 0.05)' : 'var(--bg-subtle)',
-              cursor: 'pointer',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{ width: '38px', height: '38px', borderRadius: 'var(--radius-md)', background: '#f3e8ff', color: '#6b21a8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldCheck size={20} />
+          {/* Admin - Strictly hidden when currentUser is a Buyer */}
+          {currentUser?.role !== 'Buyer' && (
+            <div
+              onClick={() => {
+                const admin = users.find((u) => u.role === 'Admin') || { id: 'usr-001', name: 'Dilan Wanni Arachchi', role: 'Admin' };
+                onSwitchUser(admin);
+                onOpenLogistics('dashboard');
+              }}
+              style={{
+                padding: '20px',
+                borderRadius: 'var(--radius-lg)',
+                border: currentUser?.role === 'Admin' ? '2px solid #9333ea' : '1px solid var(--border-subtle)',
+                background: currentUser?.role === 'Admin' ? 'rgba(147, 51, 234, 0.05)' : 'var(--bg-subtle)',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: 'var(--radius-md)', background: '#f3e8ff', color: '#6b21a8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <ShieldCheck size={20} />
+                </div>
+                <span className="badge badge-role-admin">Admin Lead</span>
               </div>
-              <span className="badge badge-role-admin">Admin Lead</span>
+              <h4 style={{ fontSize: '1.05rem', margin: 0 }}>System & Logistics Admin</h4>
+              <p style={{ fontSize: '0.82rem', lineHeight: 1.4 }}>
+                Manage user roles and permissions, auto-match pending freight with nearest lorries, and generate audit reports.
+              </p>
+              <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#6b21a8', marginTop: 'auto' }}>
+                Switch to Admin (Dilan) →
+              </span>
             </div>
-            <h4 style={{ fontSize: '1.05rem', margin: 0 }}>System & Logistics Admin</h4>
-            <p style={{ fontSize: '0.82rem', lineHeight: 1.4 }}>
-              Manage user roles and permissions, auto-match pending freight with nearest lorries, and generate audit reports.
-            </p>
-            <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#6b21a8', marginTop: 'auto' }}>
-              Switch to Admin (Dilan) →
-            </span>
-          </div>
+          )}
         </div>
       </section>
 

@@ -39,9 +39,16 @@ export default function UserManagementView({
     vehicleType: '',
   });
 
-  const roles = ['All', 'Admin', 'Seller', 'Buyer', 'Driver'];
+  const isBuyer = currentUser?.role === 'Buyer';
+  const isAdmin = currentUser?.role === 'Admin';
 
-  const filteredUsers = users.filter((u) => {
+  // If a Buyer views user data, completely filter out all Admin users to protect admin privacy
+  const safeUsers = isBuyer ? users.filter((u) => u.role !== 'Admin') : users;
+  const roles = isBuyer
+    ? ['All', 'Seller', 'Buyer', 'Driver']
+    : ['All', 'Admin', 'Seller', 'Buyer', 'Driver'];
+
+  const filteredUsers = safeUsers.filter((u) => {
     const matchesRole = roleFilter === 'All' || u.role.toLowerCase() === roleFilter.toLowerCase();
     const matchesStatus = statusFilter === 'All' || u.status.toLowerCase() === statusFilter.toLowerCase();
     const q = searchQuery.toLowerCase().trim();
@@ -79,27 +86,31 @@ export default function UserManagementView({
         <div>
           <h1 style={{ fontSize: '1.85rem' }}>User & Access Control Directory</h1>
           <p style={{ marginTop: '4px' }}>
-            Manage user authorization levels (Admin, Farmer/Seller, Buyer, Transporter) and account statuses.
+            Manage user authorization levels (Farmer/Seller, Buyer, Transporter) and account statuses.
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <button className="btn btn-secondary" onClick={onOpenAdminPassword}>
-            <Lock size={15} /> Admin Password Security
-          </button>
-          <button className="btn btn-primary" onClick={() => setIsAddUserOpen(true)}>
-            <UserPlus size={16} /> Register New User
-          </button>
-        </div>
+        {isAdmin && (
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button className="btn btn-secondary" onClick={onOpenAdminPassword}>
+              <Lock size={15} /> Admin Password Security
+            </button>
+            <button className="btn btn-primary" onClick={() => setIsAddUserOpen(true)}>
+              <UserPlus size={16} /> Register New User
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Role Counts Summary */}
       <div className="stats-grid">
-        <div className="stat-card">
-          <span className="stat-label">Administrators</span>
-          <div className="stat-value">{users.filter((u) => u.role === 'Admin').length}</div>
-          <div className="stat-subtitle">Full system configuration</div>
-        </div>
+        {!isBuyer && (
+          <div className="stat-card">
+            <span className="stat-label">Administrators</span>
+            <div className="stat-value">{users.filter((u) => u.role === 'Admin').length}</div>
+            <div className="stat-subtitle">Full system configuration</div>
+          </div>
+        )}
 
         <div className="stat-card">
           <span className="stat-label">Farmers & Sellers</span>
@@ -272,19 +283,25 @@ export default function UserManagementView({
                   </td>
 
                   <td style={{ textAlign: 'right' }}>
-                    <div style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
-                      <select
-                        className="select-control"
-                        style={{ padding: '4px 8px', fontSize: '0.78rem', width: 'auto' }}
-                        value={u.role}
-                        onChange={(e) => onUpdateUserStatus(u.id, { role: e.target.value })}
-                      >
-                        <option value="Admin">Admin</option>
-                        <option value="Seller">Seller (Farmer)</option>
-                        <option value="Buyer">Buyer</option>
-                        <option value="Driver">Driver</option>
-                      </select>
-                    </div>
+                    {isAdmin ? (
+                      <div style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
+                        <select
+                          className="select-control"
+                          style={{ padding: '4px 8px', fontSize: '0.78rem', width: 'auto' }}
+                          value={u.role}
+                          onChange={(e) => onUpdateUserStatus(u.id, { role: e.target.value })}
+                        >
+                          <option value="Admin">Admin</option>
+                          <option value="Seller">Seller (Farmer)</option>
+                          <option value="Buyer">Buyer</option>
+                          <option value="Driver">Driver</option>
+                        </select>
+                      </div>
+                    ) : (
+                      <span className={`badge badge-role-${u.role.toLowerCase()}`}>
+                        {u.role}
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))

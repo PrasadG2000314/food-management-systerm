@@ -1,8 +1,13 @@
 import { memoryStore } from '../db.js';
 
 export const getUsers = (req, res) => {
-  const { role, status, search } = req.query;
+  const { role, status, search, requesterRole } = req.query;
   let results = [...memoryStore.users];
+
+  // If requester is a Buyer, never return Admin records
+  if (requesterRole === 'Buyer') {
+    results = results.filter((u) => u.role !== 'Admin');
+  }
 
   if (role && role !== 'All') {
     results = results.filter((u) => u.role.toLowerCase() === role.toLowerCase());
@@ -18,17 +23,20 @@ export const getUsers = (req, res) => {
       (u) =>
         u.name.toLowerCase().includes(q) ||
         u.email.toLowerCase().includes(q) ||
-        u.phone.toLowerCase().includes(q) ||
+        u.phone.includes(q) ||
         (u.district && u.district.toLowerCase().includes(q)) ||
         (u.farmName && u.farmName.toLowerCase().includes(q)) ||
         (u.businessName && u.businessName.toLowerCase().includes(q))
     );
   }
 
+  // Never expose passwords in API responses
+  const sanitized = results.map(({ password, ...safeUser }) => safeUser);
+
   return res.json({
     success: true,
-    total: results.length,
-    users: results,
+    total: sanitized.length,
+    users: sanitized,
   });
 };
 
@@ -37,7 +45,8 @@ export const getUserById = (req, res) => {
   if (!user) {
     return res.status(404).json({ success: false, message: 'User not found' });
   }
-  return res.json({ success: true, user });
+  const { password, ...safeUser } = user;
+  return res.json({ success: true, user: safeUser });
 };
 
 export const updateUserStatus = (req, res) => {
@@ -52,10 +61,12 @@ export const updateUserStatus = (req, res) => {
   if (status) user.status = status;
   if (role) user.role = role;
 
+  const { password, ...safeUser } = user;
+
   return res.json({
     success: true,
     message: 'User permissions/status updated',
-    user,
+    user: safeUser,
   });
 };
 
@@ -66,9 +77,12 @@ export const deleteUser = (req, res) => {
     return res.status(404).json({ success: false, message: 'User not found' });
   }
 
-  memoryStore.users.splice(idx, 1);
+  const deleted = memoryStore.users.splice(idx, 1)[0];
+  const { password, ...safeUser } = deleted;
+
   return res.json({
     success: true,
-    message: 'User deleted successfully',
+    message: 'User removed successfully',
+    user: safeUser,
   });
 };

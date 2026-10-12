@@ -144,7 +144,10 @@ export default function Navbar({
                 </div>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', padding: '6px 0' }}>
-                  {allUsers?.slice(0, 5).map((user) => {
+                  {allUsers
+                    ?.filter((user) => (currentUser?.role === 'Buyer' ? user.role !== 'Admin' : true))
+                    .slice(0, 5)
+                    .map((user) => {
                     const isSelected = user.id === currentUser?.id;
                     return (
                       <button

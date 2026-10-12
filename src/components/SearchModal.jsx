@@ -9,6 +9,7 @@ export default function SearchModal({
   drivers = [],
   onSelectShipment,
   onSelectUser,
+  currentUser,
 }) {
   const [query, setQuery] = useState('');
   const [filterType, setFilterType] = useState('ALL');
@@ -33,6 +34,7 @@ export default function SearchModal({
   if (!isOpen) return null;
 
   const q = query.toLowerCase().trim();
+  const isBuyer = currentUser?.role === 'Buyer';
 
   // Filtered shipments
   const matchedShipments = shipments.filter(
@@ -47,16 +49,18 @@ export default function SearchModal({
       s.dropoffLocation?.district?.toLowerCase().includes(q)
   );
 
-  // Filtered users
-  const matchedUsers = users.filter(
-    (u) =>
-      !q ||
-      u.name.toLowerCase().includes(q) ||
-      u.email.toLowerCase().includes(q) ||
-      u.phone.includes(q) ||
-      u.role.toLowerCase().includes(q) ||
-      u.district?.toLowerCase().includes(q)
-  );
+  // Filtered users: completely exclude Admin users when searcher is a Buyer
+  const matchedUsers = users
+    .filter((u) => (isBuyer ? u.role !== 'Admin' : true))
+    .filter(
+      (u) =>
+        !q ||
+        u.name.toLowerCase().includes(q) ||
+        u.email.toLowerCase().includes(q) ||
+        u.phone.includes(q) ||
+        u.role.toLowerCase().includes(q) ||
+        u.district?.toLowerCase().includes(q)
+    );
 
   // Filtered drivers
   const matchedDrivers = drivers.filter(
