@@ -9,6 +9,8 @@ import {
   Moon,
   ChevronDown,
   CheckCircle2,
+  Lock,
+  Shield,
 } from 'lucide-react';
 
 export default function Navbar({
@@ -22,6 +24,7 @@ export default function Navbar({
   onOpenSearch,
   onOpenProfile,
   onOpenOverview,
+  onOpenAdminLogin,
 }) {
   const [roleMenuOpen, setRoleMenuOpen] = useState(false);
 
@@ -98,6 +101,19 @@ export default function Navbar({
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
+
+          {/* Admin Login Portal shortcut for Buyers / Non-Admins */}
+          {currentUser?.role !== 'Admin' && (
+            <button
+              className="btn btn-secondary btn-sm"
+              onClick={onOpenAdminLogin}
+              title="Sign in as Administrator with password"
+              style={{ gap: '5px', fontSize: '0.78rem', padding: '6px 11px', borderRadius: 'var(--radius-full)' }}
+            >
+              <Lock size={13} color="var(--primary)" />
+              <span>Admin Login</span>
+            </button>
+          )}
 
           {/* Role Switcher Dropdown */}
           <div style={{ position: 'relative' }}>
@@ -191,7 +207,7 @@ export default function Navbar({
                   })}
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '6px' }}>
+                <div style={{ borderTop: '1px solid var(--border-light)', paddingTop: '6px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
                   <button
                     className="btn btn-subtle btn-sm"
                     style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.8rem' }}
@@ -202,6 +218,19 @@ export default function Navbar({
                   >
                     Edit My Profile
                   </button>
+
+                  {currentUser?.role !== 'Admin' && (
+                    <button
+                      className="btn btn-subtle btn-sm"
+                      style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.8rem', color: 'var(--primary)' }}
+                      onClick={() => {
+                        setRoleMenuOpen(false);
+                        onOpenAdminLogin();
+                      }}
+                    >
+                      <Lock size={13} /> Admin Portal Sign-In
+                    </button>
+                  )}
                 </div>
               </div>
             )}

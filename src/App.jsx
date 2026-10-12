@@ -6,6 +6,7 @@ import ProfileModal from './components/ProfileModal';
 import NewShipmentModal from './components/NewShipmentModal';
 import ProjectOverviewModal from './components/ProjectOverviewModal';
 import AdminPasswordModal from './components/AdminPasswordModal';
+import AdminLoginModal from './components/AdminLoginModal';
 
 import HomeView from './views/HomeView';
 import UserLogisticsModuleView from './views/UserLogisticsModuleView';
@@ -29,6 +30,7 @@ export default function App() {
   const [isNewShipmentOpen, setIsNewShipmentOpen] = useState(false);
   const [isOverviewOpen, setIsOverviewOpen] = useState(false);
   const [isAdminPasswordOpen, setIsAdminPasswordOpen] = useState(false);
+  const [isAdminLoginOpen, setIsAdminLoginOpen] = useState(false);
 
   const [activeTrackingId, setActiveTrackingId] = useState('SHP-701');
   const [activePodId, setActivePodId] = useState('SHP-701');
@@ -227,6 +229,7 @@ export default function App() {
         onOpenSearch={() => setIsSearchOpen(true)}
         onOpenProfile={() => setIsProfileOpen(true)}
         onOpenOverview={() => setIsOverviewOpen(true)}
+        onOpenAdminLogin={() => setIsAdminLoginOpen(true)}
       />
 
       {/* Main View Container */}
@@ -291,8 +294,29 @@ export default function App() {
           <div>
             <strong>AgriBridge</strong> • IT2150 IT Project (SLIIT 2026) • User & Logistics Management
           </div>
-          <div>
-            Developed by <strong>Wanni Arachchi W.A.D.P.</strong> (IT22601056)
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <span>
+              Developed by <strong>Wanni Arachchi W.A.D.P.</strong> (IT22601056)
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsAdminLoginOpen(true)}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--primary)',
+                fontSize: '0.8rem',
+                cursor: 'pointer',
+                fontWeight: 600,
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: 0,
+              }}
+              title="Open secure Administrator authentication portal"
+            >
+              🔒 Admin Sign In
+            </button>
           </div>
         </div>
       </footer>
@@ -341,6 +365,18 @@ export default function App() {
           showToast={showToast}
         />
       )}
+
+      {/* Admin Login Portal Modal */}
+      <AdminLoginModal
+        isOpen={isAdminLoginOpen}
+        onClose={() => setIsAdminLoginOpen(false)}
+        onAdminLoginSuccess={(adminUser) => {
+          handleSwitchUser(adminUser);
+          handleOpenLogistics('dashboard');
+        }}
+        showToast={showToast}
+        adminUser={users.find((u) => u.role === 'Admin')}
+      />
 
       {/* Toasts */}
       <Toast toasts={toasts} onRemove={removeToast} />
