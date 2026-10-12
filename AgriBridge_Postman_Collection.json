@@ -1,0 +1,205 @@
+{
+  "info": {
+    "name": "AgriBridge - User & Logistics Management API",
+    "description": "Postman Collection for IT2150 IT Project (SLIIT) - User & Logistics Management Component by Wanni Arachchi W.A.D.P.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "health"]
+        }
+      }
+    },
+    {
+      "name": "Auth & Users",
+      "item": [
+        {
+          "name": "Login (Admin Email & Password)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"dilan@agribridge.lk\",\n  \"password\": \"Admin@2026\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "login"] }
+          }
+        },
+        {
+          "name": "Verify Admin Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"password\": \"Admin@2026\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/verify-admin", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "verify-admin"] }
+          }
+        },
+        {
+          "name": "Change Admin Password (Bcrypt Encrypted)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"usr-001\",\n  \"currentPassword\": \"Admin@2026\",\n  \"newPassword\": \"Admin@2026_Secure\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/change-password", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "change-password"] }
+          }
+        },
+        {
+          "name": "Register New User (Driver / Buyer / Seller)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sampath Perera\",\n  \"email\": \"sampath@agribridge.lk\",\n  \"phone\": \"+94 71 334 5566\",\n  \"role\": \"Driver\",\n  \"district\": \"Kurunegala\",\n  \"vehicleNumber\": \"NW-CA-9921\",\n  \"vehicleType\": \"2.5T Lorry\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/auth/register", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "auth", "register"] }
+          }
+        },
+        {
+          "name": "Get All Users (Filtered & Search)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/users?role=All&status=Active&search=",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "users"],
+              "query": [
+                { "key": "role", "value": "All" },
+                { "key": "status", "value": "Active" },
+                { "key": "search", "value": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update User Status / Permissions",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"Active\",\n  \"role\": \"Admin\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/users/usr-002/status", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "users", "usr-002", "status"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shipments & Logistics",
+      "item": [
+        {
+          "name": "Get All Shipments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:5000/api/shipments", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "shipments"] }
+          }
+        },
+        {
+          "name": "Create New Shipment Order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"orderId\": \"ORD-9800\",\n  \"farmerName\": \"Sunil Bandara\",\n  \"farmerId\": \"usr-002\",\n  \"buyerName\": \"Lanka Fresh Superstores\",\n  \"buyerId\": \"usr-004\",\n  \"produce\": \"Organic Strawberries & Leeks\",\n  \"quantityKg\": 800,\n  \"crates\": 32,\n  \"pickupDistrict\": \"Nuwara Eliya\",\n  \"pickupAddress\": \"Hakgala Road Farm Gate\",\n  \"dropoffDistrict\": \"Colombo\",\n  \"dropoffAddress\": \"Kollupitiya Supermarket Terminal\",\n  \"priority\": \"High\",\n  \"requiresRefrigeration\": true\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/shipments", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "shipments"] }
+          }
+        },
+        {
+          "name": "Auto-Assign Driver (Proximity Algorithm)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"autoMatch\": true\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/shipments/SHP-703/assign-driver", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "shipments", "SHP-703", "assign-driver"] }
+          }
+        },
+        {
+          "name": "Update Shipment Status (e.g. In-Transit / Dispatched)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"In-Transit\",\n  \"currentLocation\": \"Passing Ambepussa Rest Stop\",\n  \"note\": \"Temperature 5°C logged, running smoothly.\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/shipments/SHP-702/status", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "shipments", "SHP-702", "status"] }
+          }
+        },
+        {
+          "name": "Confirm Proof of Delivery (OTP & POD)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"otpCode\": \"4921\",\n  \"receivedBy\": \"Peshala Mendis\",\n  \"signatureData\": \"data:image/svg+xml;utf8,<svg></svg>\",\n  \"notes\": \"All produce verified in excellent crisp condition.\"\n}"
+            },
+            "url": { "raw": "http://localhost:5000/api/shipments/SHP-701/confirm-pod", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "shipments", "SHP-701", "confirm-pod"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Report Generator",
+      "item": [
+        {
+          "name": "Overview Logistics Stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:5000/api/reports/overview", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "reports", "overview"] }
+          }
+        },
+        {
+          "name": "Completed Deliveries Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:5000/api/reports/completed", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "reports", "completed"] }
+          }
+        },
+        {
+          "name": "Delayed Shipments Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:5000/api/reports/delayed", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "reports", "delayed"] }
+          }
+        },
+        {
+          "name": "Driver Performance Metrics Report",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "http://localhost:5000/api/reports/drivers", "protocol": "http", "host": ["localhost"], "port": "5000", "path": ["api", "reports", "drivers"] }
+          }
+        }
+      ]
+    }
+  ]
+}

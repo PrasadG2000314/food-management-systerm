@@ -1,0 +1,372 @@
+// Seed data representing Sri Lankan Agricultural Marketplace ("AgriBridge")
+export const initialUsers = [
+  {
+    id: "usr-001",
+    name: "Dilan Wanni Arachchi",
+    email: "dilan@agribridge.lk",
+    phone: "+94 77 123 4567",
+    role: "Admin",
+    status: "Active",
+    district: "Colombo",
+    address: "Level 4, AgriBridge HQ, Colombo 03",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+    password: "Admin@2026",
+    passwordHash: "$2b$10$xrvBMYfzTgqiTDUCb7Su3uj4/lQK5bws2b8O0uQ/8GVE60rucg.KK",
+    createdAt: "2026-01-15T08:00:00Z",
+    notes: "Lead Logistics & Security Administrator"
+  },
+  {
+    id: "usr-002",
+    name: "Sunil Bandara",
+    email: "sunil.farm@agribridge.lk",
+    phone: "+94 71 889 1234",
+    role: "Seller",
+    farmName: "Green Valley Organic Farm",
+    produceTypes: ["Carrots", "Leeks", "Cabbage", "Potatoes"],
+    status: "Active",
+    district: "Nuwara Eliya",
+    address: "Upper Lake Road, Nuwara Eliya",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+    createdAt: "2026-02-01T10:30:00Z",
+    notes: "Wholesale organic vegetable supplier"
+  },
+  {
+    id: "usr-003",
+    name: "Kamal Rathnayake",
+    email: "kamal.dambulla@agribridge.lk",
+    phone: "+94 76 543 9876",
+    role: "Seller",
+    farmName: "Rathna Agro Produce",
+    produceTypes: ["Onions", "Tomatoes", "Green Chilies"],
+    status: "Active",
+    district: "Matale",
+    address: "Economic Centre Road, Dambulla",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+    createdAt: "2026-02-10T11:15:00Z",
+    notes: "Major Dambulla hub wholesale vendor"
+  },
+  {
+    id: "usr-004",
+    name: "Peshala Mendis",
+    email: "peshala.supermarket@agribridge.lk",
+    phone: "+94 77 432 1098",
+    role: "Buyer",
+    businessName: "Lanka Fresh Superstores Network",
+    buyerType: "Wholesale Supermarket Chain",
+    status: "Active",
+    district: "Gampaha",
+    address: "Kandy Road, Kelaniya",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+    createdAt: "2026-02-14T09:40:00Z",
+    notes: "Bulk daily buyer of highland crops"
+  },
+  {
+    id: "usr-005",
+    name: "Chathura Dias",
+    email: "chathura.logistics@agribridge.lk",
+    phone: "+94 70 234 5678",
+    role: "Driver",
+    vehicleNumber: "WP-ND-8492",
+    vehicleType: "3.5T Refrigerated Truck",
+    status: "Active",
+    district: "Kandy",
+    address: "Peradeniya Junction, Kandy",
+    avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=200&q=80",
+    createdAt: "2026-02-20T14:20:00Z",
+    notes: "Specialized cold chain perishable transport"
+  },
+  {
+    id: "usr-006",
+    name: "Nimal Jayawardena",
+    email: "nimal.driver@agribridge.lk",
+    phone: "+94 72 345 6789",
+    role: "Driver",
+    vehicleNumber: "CP-LH-1123",
+    vehicleType: "2.0T Covered Lorry",
+    status: "Active",
+    district: "Kurunegala",
+    address: "Circular Road, Kurunegala",
+    avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=200&q=80",
+    createdAt: "2026-02-22T08:15:00Z",
+    notes: "Experienced dry goods & root vegetable courier"
+  }
+];
+
+export const initialDrivers = [
+  {
+    id: "drv-001",
+    userId: "usr-005",
+    name: "Chathura Dias",
+    phone: "+94 70 234 5678",
+    licenseNumber: "B-88349201",
+    vehicleNumber: "WP-ND-8492",
+    vehicleType: "3.5T Refrigerated Truck",
+    capacityKg: 3500,
+    currentLocation: "Kandy Central Hub",
+    district: "Kandy",
+    isAvailable: true,
+    rating: 4.9,
+    completedTrips: 142,
+    onTimeRate: 98.6,
+    activeShipmentId: "SHP-702"
+  },
+  {
+    id: "drv-002",
+    userId: "usr-006",
+    name: "Nimal Jayawardena",
+    phone: "+94 72 345 6789",
+    licenseNumber: "B-91023847",
+    vehicleNumber: "CP-LH-1123",
+    vehicleType: "2.0T Covered Lorry",
+    capacityKg: 2000,
+    currentLocation: "Dambulla Economic Zone",
+    district: "Matale",
+    isAvailable: true,
+    rating: 4.7,
+    completedTrips: 98,
+    onTimeRate: 94.2,
+    activeShipmentId: null
+  },
+  {
+    id: "drv-003",
+    name: "Ruwan Wijesinghe",
+    phone: "+94 78 901 2345",
+    licenseNumber: "B-77239100",
+    vehicleNumber: "SP-CA-4490",
+    vehicleType: "1.5T Light Pickup",
+    capacityKg: 1500,
+    currentLocation: "Nuwara Eliya Wholesale Hub",
+    district: "Nuwara Eliya",
+    isAvailable: false,
+    rating: 4.8,
+    completedTrips: 87,
+    onTimeRate: 96.5,
+    activeShipmentId: "SHP-701"
+  },
+  {
+    id: "drv-004",
+    name: "Kasun Priyashantha",
+    phone: "+94 75 678 9123",
+    licenseNumber: "B-66281923",
+    vehicleNumber: "WP-DA-3021",
+    vehicleType: "4.0T Insulated Truck",
+    capacityKg: 4000,
+    currentLocation: "Colombo Manning Distribution Hub",
+    district: "Colombo",
+    isAvailable: true,
+    rating: 4.9,
+    completedTrips: 215,
+    onTimeRate: 99.1,
+    activeShipmentId: null
+  }
+];
+
+export const initialShipments = [
+  {
+    id: "SHP-701",
+    orderId: "ORD-9420",
+    farmerId: "usr-002",
+    farmerName: "Sunil Bandara (Green Valley)",
+    buyerId: "usr-004",
+    buyerName: "Peshala Mendis (Lanka Fresh)",
+    produce: "Nuwara Eliya Carrots & Leeks",
+    category: "Highland Vegetables",
+    quantityKg: 1200,
+    crates: 48,
+    pickupLocation: {
+      address: "Green Valley Farm, Upper Lake Rd",
+      district: "Nuwara Eliya",
+      hub: "Nuwara Eliya Agro Station"
+    },
+    dropoffLocation: {
+      address: "Lanka Fresh Central Warehouse, Peliyagoda",
+      district: "Gampaha",
+      hub: "Western Distribution Centre"
+    },
+    assignedDriverId: "drv-003",
+    assignedDriverName: "Ruwan Wijesinghe",
+    vehicleNumber: "SP-CA-4490",
+    status: "In-Transit",
+    priority: "High",
+    requiresRefrigeration: true,
+    estimatedDeparture: "2026-10-12T02:00:00Z",
+    estimatedDelivery: "2026-10-12T11:30:00Z",
+    createdAt: "2026-10-11T16:00:00Z",
+    currentLocation: "Passing Kandy Expressway Exit (Mile 42)",
+    otpCode: "4921",
+    timeline: [
+      { status: "Pending", time: "2026-10-11T16:00:00Z", note: "Order placed and logistics request queued" },
+      { status: "Assigned", time: "2026-10-11T18:30:00Z", note: "Matched with driver Ruwan Wijesinghe (1.5T Light Pickup)" },
+      { status: "Dispatched", time: "2026-10-12T02:15:00Z", note: "Loaded and departed Nuwara Eliya Agro Station" },
+      { status: "In-Transit", time: "2026-10-12T05:40:00Z", note: "In transit via A1 corridor. Temp maintained at 4°C." }
+    ],
+    proofOfDelivery: null
+  },
+  {
+    id: "SHP-702",
+    orderId: "ORD-9418",
+    farmerId: "usr-003",
+    farmerName: "Kamal Rathnayake (Rathna Agro)",
+    buyerId: "usr-004",
+    buyerName: "Peshala Mendis (Lanka Fresh)",
+    produce: "Dambulla Red Onions & Tomatoes",
+    category: "Lowland Produce",
+    quantityKg: 2400,
+    crates: 80,
+    pickupLocation: {
+      address: "Dambulla Dedicated Economic Centre, Shed B-12",
+      district: "Matale",
+      hub: "Dambulla Central Hub"
+    },
+    dropoffLocation: {
+      address: "Wholesale Mart, Fort Market, Colombo 11",
+      district: "Colombo",
+      hub: "Colombo Central Terminal"
+    },
+    assignedDriverId: "drv-001",
+    assignedDriverName: "Chathura Dias",
+    vehicleNumber: "WP-ND-8492",
+    status: "Dispatched",
+    priority: "Normal",
+    requiresRefrigeration: false,
+    estimatedDeparture: "2026-10-12T04:00:00Z",
+    estimatedDelivery: "2026-10-12T13:00:00Z",
+    createdAt: "2026-10-11T19:00:00Z",
+    currentLocation: "Dambulla Hub Gateway - Weighed & Sealed",
+    otpCode: "7183",
+    timeline: [
+      { status: "Pending", time: "2026-10-11T19:00:00Z", note: "Wholesale consignment booked" },
+      { status: "Assigned", time: "2026-10-11T20:10:00Z", note: "Assigned to driver Chathura Dias" },
+      { status: "Dispatched", time: "2026-10-12T04:05:00Z", note: "Dispatched from Dambulla Economic Centre" }
+    ],
+    proofOfDelivery: null
+  },
+  {
+    id: "SHP-700",
+    orderId: "ORD-9390",
+    farmerId: "usr-002",
+    farmerName: "Sunil Bandara (Green Valley)",
+    buyerId: "usr-004",
+    buyerName: "Peshala Mendis (Lanka Fresh)",
+    produce: "Highland Organic Potatoes",
+    category: "Root Crops",
+    quantityKg: 3000,
+    crates: 100,
+    pickupLocation: {
+      address: "Green Valley Farm, Nuwara Eliya",
+      district: "Nuwara Eliya",
+      hub: "Nuwara Eliya Agro Station"
+    },
+    dropoffLocation: {
+      address: "Lanka Fresh Cold Storage, Wattala",
+      district: "Gampaha",
+      hub: "Wattala Cold Chain"
+    },
+    assignedDriverId: "drv-004",
+    assignedDriverName: "Kasun Priyashantha",
+    vehicleNumber: "WP-DA-3021",
+    status: "Delivered",
+    priority: "High",
+    requiresRefrigeration: true,
+    estimatedDeparture: "2026-10-10T03:00:00Z",
+    estimatedDelivery: "2026-10-10T12:00:00Z",
+    createdAt: "2026-10-09T14:00:00Z",
+    deliveredAt: "2026-10-10T11:45:00Z",
+    currentLocation: "Delivered at Destination",
+    otpCode: "8820",
+    timeline: [
+      { status: "Pending", time: "2026-10-09T14:00:00Z", note: "Consignment created" },
+      { status: "Assigned", time: "2026-10-09T15:20:00Z", note: "Driver Kasun Priyashantha assigned" },
+      { status: "Dispatched", time: "2026-10-10T03:00:00Z", note: "Dispatched with cold log active" },
+      { status: "In-Transit", time: "2026-10-10T07:15:00Z", note: "Passed Kaduwela Interchange" },
+      { status: "Delivered", time: "2026-10-10T11:45:00Z", note: "Successfully received by store manager" }
+    ],
+    proofOfDelivery: {
+      verifiedAt: "2026-10-10T11:45:00Z",
+      method: "OTP_AND_SIGNATURE",
+      receivedBy: "Peshala Mendis (Store Ops Manager)",
+      otpVerified: true,
+      signatureData: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='60'><path d='M10 40 Q 50 10 90 40 T 170 30' stroke='%23059669' stroke-width='3' fill='none'/></svg>",
+      photoUrl: "https://images.unsplash.com/photo-1595246140625-573b715d11dc?auto=format&fit=crop&w=600&q=80",
+      notes: "All 100 crates inspected. Zero transit bruising."
+    }
+  },
+  {
+    id: "SHP-703",
+    orderId: "ORD-9435",
+    farmerId: "usr-003",
+    farmerName: "Kamal Rathnayake (Rathna Agro)",
+    buyerId: "usr-004",
+    buyerName: "Peshala Mendis (Lanka Fresh)",
+    produce: "Green Bell Peppers & Chili",
+    category: "Fresh Vegetables",
+    quantityKg: 850,
+    crates: 35,
+    pickupLocation: {
+      address: "Galewela Harvest Depot",
+      district: "Matale",
+      hub: "Galewela Outpost"
+    },
+    dropoffLocation: {
+      address: "Nittambuwa Processing Hub",
+      district: "Gampaha",
+      hub: "Nittambuwa Hub"
+    },
+    assignedDriverId: null,
+    assignedDriverName: null,
+    vehicleNumber: null,
+    status: "Pending",
+    priority: "Normal",
+    requiresRefrigeration: false,
+    estimatedDeparture: "2026-10-12T09:00:00Z",
+    estimatedDelivery: "2026-10-12T16:00:00Z",
+    createdAt: "2026-10-12T01:30:00Z",
+    currentLocation: "Galewela Harvest Depot (Awaiting Transport)",
+    otpCode: "3051",
+    timeline: [
+      { status: "Pending", time: "2026-10-12T01:30:00Z", note: "Awaiting driver allocation algorithm match" }
+    ],
+    proofOfDelivery: null
+  },
+  {
+    id: "SHP-698",
+    orderId: "ORD-9340",
+    farmerId: "usr-002",
+    farmerName: "Sunil Bandara (Green Valley)",
+    buyerId: "usr-004",
+    buyerName: "Lanka Super Wholesale",
+    produce: "Cabbage & Cauliflower",
+    category: "Highland Vegetables",
+    quantityKg: 1800,
+    crates: 60,
+    pickupLocation: {
+      address: "Kandapola Collection Point",
+      district: "Nuwara Eliya",
+      hub: "Kandapola Depot"
+    },
+    dropoffLocation: {
+      address: "Manning Market Complex, Peliyagoda",
+      district: "Colombo",
+      hub: "Colombo North"
+    },
+    assignedDriverId: "drv-002",
+    assignedDriverName: "Nimal Jayawardena",
+    vehicleNumber: "CP-LH-1123",
+    status: "Delayed",
+    priority: "High",
+    requiresRefrigeration: true,
+    estimatedDeparture: "2026-10-08T04:00:00Z",
+    estimatedDelivery: "2026-10-08T12:00:00Z",
+    createdAt: "2026-10-07T18:00:00Z",
+    currentLocation: "Ramboda Pass - Weather Slowdown",
+    otpCode: "6124",
+    delayReason: "Severe torrential rain and mudslide clearing on A5 Highway",
+    timeline: [
+      { status: "Pending", time: "2026-10-07T18:00:00Z", note: "Order scheduled" },
+      { status: "Assigned", time: "2026-10-07T20:00:00Z", note: "Driver assigned" },
+      { status: "Dispatched", time: "2026-10-08T04:30:00Z", note: "Left Kandapola Depot" },
+      { status: "Delayed", time: "2026-10-08T08:15:00Z", note: "Traffic halted at Ramboda pass due to torrential weather" }
+    ],
+    proofOfDelivery: null
+  }
+];
